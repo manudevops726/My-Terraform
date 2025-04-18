@@ -19,16 +19,13 @@ resource "aws_instance" "name" {
     instance_type = "t2.micro"
   
 }
-<<<<<<< HEAD
 resource "aws_subnet" "devops" {
     cidr_block = "10.0.3.0/24"
      vpc_id = aws_vpc.dev.id
 }
-=======
 
 resource "aws_subnet" "prod" {
     cidr_block = "10.0.2.0/24"
      vpc_id = aws_vpc.dev.id
   
 }
->>>>>>> 5a1ffa9a2960b7a7f24df8c7bedffef26a289ae2
