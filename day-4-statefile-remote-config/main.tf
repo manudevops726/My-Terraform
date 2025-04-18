@@ -19,3 +19,7 @@ resource "aws_instance" "name" {
     instance_type = "t2.micro"
   
 }
+resource "aws_subnet" "devops" {
+    cidr_block = "10.0.3.0/24"
+     vpc_id = aws_vpc.dev.id
+}
