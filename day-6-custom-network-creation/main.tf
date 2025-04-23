@@ -11,7 +11,7 @@ resource "aws_vpc" "myvpc" {
 
  #subnet creation
 
- resource "aws_subnet" "prod" {
+ resource "aws_subnet" "public" {
     vpc_id = aws_vpc.myvpc.id
     cidr_block = "10.0.0.0/24"
     availability_zone = "ap-south-1a"
@@ -22,7 +22,7 @@ resource "aws_vpc" "myvpc" {
  
 #pvt subnet
 
- resource "aws_subnet" "dev" {
+ resource "aws_subnet" "private" {
     vpc_id = aws_vpc.myvpc.id
     cidr_block = "10.0.1.0/24"
     availability_zone = "ap-south-1b"
@@ -49,64 +49,41 @@ resource "aws_internet_gateway" "my-ig" {
 
 resource "aws_route_table_association" "rt-ig" {
     route_table_id = aws_route_table.rt-ig.id
-    subnet_id = aws_subnet.prod.id
+    subnet_id = aws_subnet.public.id
     
 }
 #create eip
 resource "aws_eip" "name" {
-
-   domain = "vpc"
-}
-  
-
- #create nat gateway
-
-    
-  
-resource "aws_nat_gateway" "name" {
-  allocation_id = aws_eip.name.id
-   subnet_id     = aws_subnet.prod.id
-
-
-}
- #rt-nat
- resource "aws_route_table" "name" {
-
-    vpc_id = aws_vpc.myvpc.id
-    route {
-        cidr_block = "0.0.0.0/0"
-        gateway_id = aws_nat_gateway.name.id
-    }
+     domain = "vpc"
+   
+ }
+ resource "aws_nat_gateway" "name" {
+     allocation_id = aws_eip.name.id
+     subnet_id = aws_subnet.private.id
+   
  }
  
- resource "aws_route_table_association" "name" {
-  route_table_id = aws_nat_gateway.name.id
-  subnet_id      = aws_subnet.dev.id
-}
-
-
-
-   
+ resource "aws_route_table" "private" {
+     vpc_id = aws_vpc.myvpc.id
+     route {
+         cidr_block= "0.0.0.0/0"
+         gateway_id = aws_nat_gateway.name.id
+     
+     }
  
-
-#ec2-creation
-
-resource "aws_instance" "name" {
-  ami                    = "ami-0e449927258d45bc4"
-  instance_type          = "t2.micro"
-  key_name               = "new-ac"
-  subnet_id              = aws_subnet.prod.id
-  vpc_security_group_ids = [aws_security_group.my-sg.id]
+   
+ }
+ resource "aws_route_table_association" "name" {
+     subnet_id = aws_subnet.private.id
+     route_table_id = aws_route_table.private.id 
   
-
-
-}
-
+ }
+     
 #create sg
 
 resource "aws_security_group" "my-sg" {
-  name        = "allow-sg"
-  vpc_id      = aws_vpc.myvpc.id
+  name        = "my-sg"
+  vpc_id      =  aws_vpc.myvpc.id
   tags = {
     Name = "my_sg"
   }
@@ -138,3 +115,12 @@ egress {
   }
   
 
+resource "aws_instance" "dev" {
+     ami = "ami-0f1dcc636b69a6438"
+     instance_type = "t2.micro"
+     subnet_id = aws_subnet.public.id
+     associate_public_ip_address = true
+     key_name               = "new-ac"
+     vpc_security_group_ids = [aws_security_group.my-sg.id]
+}
+ 
