@@ -5,7 +5,7 @@ resource "aws_instance" "dev" {
   
 }
 
-resource "aws_s3_bucket" "test" {
-    bucket = "manasas3bucketnareshit"
+# resource "aws_s3_bucket" "test" {
+#     bucket = "manasas3bucketnareshit"
   
-}
+# }
