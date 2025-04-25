@@ -1,8 +1,9 @@
 terraform {
   backend "s3" {
-    bucket = "manasadevopsbuckett" 
+    bucket = "manasadevopsbuckettt" 
     key    = "terraform.tfstate"
     region = "ap-south-1"
+    
     
   }
 }
