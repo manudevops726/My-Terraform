@@ -70,24 +70,24 @@ resource "aws_db_subnet_group" "sub-grp" {
    }
  }
  
- resource "aws_db_instance" "read_replica" {
-  provider               = aws.secondary
-  identifier             = "read-replica-instance"
-  replicate_source_db    = aws_db_instance.default.arn
-  instance_class         = "db.t3.micro"
-  publicly_accessible    = true
-  skip_final_snapshot    = true
-  db_subnet_group_name   = aws_db_subnet_group.replica.name
-#   vpc_security_group_ids = [aws_security_group.db_sg.id]
-  depends_on             = [aws_db_instance.default]
-}
+#  resource "aws_db_instance" "read_replica" {
+#   provider               = aws.secondary
+#   identifier             = "read-replica-instance"
+#   replicate_source_db    = aws_db_instance.default.arn
+#   instance_class         = "db.t3.micro"
+#   publicly_accessible    = true
+#   skip_final_snapshot    = true
+#   db_subnet_group_name   = aws_db_subnet_group.replica.name
+# #   vpc_security_group_ids = [aws_security_group.db_sg.id]
+#   depends_on             = [aws_db_instance.default]
+# }
 
-# DB Subnet Group for replica
-resource "aws_db_subnet_group" "replica" {
-  provider = aws.secondary
-  name     = "replica-subnet-group"
-  subnet_ids = [
-    "subnet-01691632d557af4f7", # replace with subnets in us-east-1
-    "subnet-062a39965e275de1d"
-  ]
-}
+# # DB Subnet Group for replica
+# resource "aws_db_subnet_group" "replica" {
+#   provider = aws.secondary
+#   name     = "replica-subnet-group"
+#   subnet_ids = [
+#     "subnet-01691632d557af4f7", # replace with subnets in us-east-1
+#     "subnet-062a39965e275de1d"
+#   ]
+# }
