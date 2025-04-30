@@ -8,7 +8,7 @@ resource "aws_vpc" "test" {
  
  # Internet Gateway (for public subnets)
  resource "aws_internet_gateway" "igw" {
-   vpc_id = aws_vpc.dev.id
+   vpc_id = aws_vpc.test.id
  
  #   tags = merge({
  #     Name = "${var.vpc_name}-igw"
@@ -18,7 +18,7 @@ resource "aws_vpc" "test" {
  # Public Subnets
  resource "aws_subnet" "public" {
    count             = length(var.public_subnets-2)
-   vpc_id            = aws_vpc.dev.id
+   vpc_id            = aws_vpc.test.id
    cidr_block        = var.public_subnets-2[count.index]
    availability_zone = var.availability_zones[count.index]
  
@@ -29,7 +29,7 @@ resource "aws_vpc" "test" {
  
  # Public Route Table
  resource "aws_route_table" "public" {
-   vpc_id = aws_vpc.dev.id
+   vpc_id = aws_vpc.test.id
  
    route {
      cidr_block = "0.0.0.0/0"
@@ -69,7 +69,7 @@ resource "aws_vpc" "test" {
  # Private Subnets
  resource "aws_subnet" "private" {
    count             = length(var.private_subnets-2)
-   vpc_id            = aws_vpc.dev.id
+   vpc_id            = aws_vpc.test.id
    cidr_block        = var.private_subnets-2[count.index]
    availability_zone = var.availability_zones[count.index]
  
@@ -97,3 +97,6 @@ resource "aws_vpc" "test" {
    subnet_id      = aws_subnet.private[count.index].id
    route_table_id = aws_route_table.private.id
  }
+
+
+
