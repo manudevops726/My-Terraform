@@ -21,21 +21,21 @@ variable "instance_type" {
 
 ############## if delete middle source case #################
 
-variable "env" {
-    type = list(string)
-    default = [ "aws","azure" ]
+# variable "env" {
+#     type = list(string)
+#     default = [ "aws","azure" ]
 
   
-}
+# }
 
-variable "ami_id" {
-    type = string
-    default = "ami-0f1dcc636b69a6438"
+# variable "ami_id" {
+#     type = string
+#     default = "ami-0f1dcc636b69a6438"
 
-}
+# }
 
-variable "instance_type" {
-    type = string
-    default = "t2.micro"
+# variable "instance_type" {
+#     type = string
+#     default = "t2.micro"
   
-}
+# }
